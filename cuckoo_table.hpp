@@ -271,12 +271,12 @@ private:
             // Out of budget. The budget also stops cycles from looping forever.
             // Undo the swaps in reverse order: this restores every slot and
             // puts the original key back in `carried`.
-           /* if (path_.size() == max_evictions_) {
+            if (path_.size() == max_evictions_) {
                 for (auto it = path_.rbegin(); it != path_.rend(); ++it)
                     std::swap(carried, slots_[*it]);
                 last_evictions_ = path_.size();
                 return false;
-            }*/
+            }
 
             // If every hash of `carried` pointed at came_from, allow it anyway.
             if (nc == 0) cand[nc++] = came_from;

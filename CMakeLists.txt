@@ -12,7 +12,8 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 add_executable(cuckoo main.cpp)
-
+# CSVs go to <repo>/results, wherever Visual Studio puts the executable.
+target_compile_definitions(cuckoo PRIVATE RESULTS_DIR="${CMAKE_SOURCE_DIR}/results")
 if(MSVC)
   target_compile_options(cuckoo PRIVATE /W4 /permissive-)
 else()

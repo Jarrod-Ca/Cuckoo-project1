@@ -167,7 +167,20 @@ public:
     }
 
     bool contains(std::uint64_t key) const noexcept { return find(key) != nullptr; }
-
+    // Number of slots a lookup of `key` compares, in the same order as
+   // find_slot(). Used only by the latency experiment, outside the timed
+   // loop, as a machine-independent cost. A miss always costs d*b.
+    std::size_t probe_count(std::uint64_t key) const noexcept {
+        std::size_t probes = 0;
+        for (std::size_t i = 0; i < cfg_.d; ++i) {
+            const Slot* bucket = &slots_[bucket_of(i, key) * cfg_.b];
+            for (std::size_t s = 0; s < cfg_.b; ++s) {
+                ++probes;
+                if (bucket[s].key == key) return probes;
+            }
+        }
+        return probes;
+    }
     // No tombstones needed: emptying a slot can't break (I1) for other keys.
     bool erase(std::uint64_t key) noexcept {
         Slot* s = find_slot(key);

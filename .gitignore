@@ -1,0 +1,3 @@
+# Visual Studio state and CMake build output
+.vs/
+out/
